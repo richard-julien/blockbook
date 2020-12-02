@@ -42,7 +42,6 @@ func NewGhostParser(params *chaincfg.Params, c *btc.Configuration) *GhostParser 
 		BitcoinParser: btc.NewBitcoinParser(params, c),
 		baseparser:    &bchain.BaseParser{},
 	}
-	// p.OutputScriptToAddressesFunc = p.outputScriptToAddresses
 	return p
 }
 
@@ -90,34 +89,3 @@ func (p *GhostParser) GetAddressesFromAddrDesc(addrDesc bchain.AddressDescriptor
 	}
 	return addrs, true, nil
 }
-
-/*
-func (p *GhostParser) outputScriptToAddresses(script []byte) ([]string, bool, error) {
-	sc, addresses, _, err := txscript.ExtractPkScriptAddrs(script, p.Params)
-	if err != nil {
-		return nil, false, err
-	}
-	// Need to handle specific Ghost types
-	if sc == txscript.NonStandardTy {
-		pops, err := txscript.PushedData(script)
-		print(pops, err)
-		//addr, err := btcutil.NewAddressPubKeyHash(pops[0], p.Params)
-		//print(addr.EncodeAddress(), err)
-	 }
-
-	rv := make([]string, len(addresses))
-	for i, a := range addresses {
-		rv[i] = a.EncodeAddress()
-	}
-	var s bool
-	if sc == txscript.PubKeyHashTy || sc == txscript.WitnessV0PubKeyHashTy || sc == txscript.ScriptHashTy || sc == txscript.WitnessV0ScriptHashTy {
-		s = true
-	} else if len(rv) == 0 {
-		or := p.TryParseOPReturn(script)
-		if or != "" {
-			rv = []string{or}
-		}
-	}
-	return rv, s, nil
-}
-*/
